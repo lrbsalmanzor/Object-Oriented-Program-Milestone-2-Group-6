@@ -17,7 +17,15 @@ public class PayrollCalculator {
             attendance.getHoursWorked(), 
             attendance.getOvertimeHours(), 
             0.0
-        );
+        );        
+        // Preserve CP2 behavior: zero gross pay has no deductions.
+        if (grossPay == 0.0) {
+            return new PayrollRecord(
+                employee.getEmployeeId(),
+                employee.getFirstName() + " " + employee.getLastName(),
+                0.0, 0.0, 0.0, 0.0, 0.0
+            );
+        }
 
         // 2. Statutory Deductions
         double sss = contributionCalculator.computeSSS(grossPay);
